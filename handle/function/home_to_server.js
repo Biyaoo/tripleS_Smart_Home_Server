@@ -94,7 +94,7 @@ var Update_Power_Value_Syntax=function(_json){
 
 	return new Promise(function(resolve, reject) {
 
-		if( !_json.code || !_json.homeCode || !_json.power)	return reject(100)		// Incorrect format
+		if( !_json.nodeCode || !_json.homeCode || !_json.power)	return reject(100)		// Incorrect format
 
 		return resolve(_json)
 

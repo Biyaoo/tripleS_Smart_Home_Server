@@ -20,7 +20,7 @@ var Send_Control= function (_data){
 
 		};
 		var _topic=_data.homeCode+"/CONTROL"
-		console.log("SYNCCCCCCCC",_data)
+		console.log("SYNCCCCCCCC")
 
 		Send_to_home(_topic,SH.return_Control(_msg))   // send with topic = homeCode/CONTROL
 		return resolve(_data)

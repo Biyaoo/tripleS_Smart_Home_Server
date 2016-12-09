@@ -108,7 +108,7 @@ var Return_Update_Device_Power=function(_rcode){
 
 	return {
 
-		title: "@UPDATEPOWER",
+		title: "@RUPDATEPOWER",
 		rcode: _rcode
 
 	}

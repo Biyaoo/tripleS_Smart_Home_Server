@@ -42,7 +42,7 @@ var SendRsp_MReg=function(_sid,_rcode){
 
 var SendRsp_MSet_Timer=function(_sid,_rcode)	{
 
-	Sendby_socketid(_sid,"RMREG",SM.return_MSet_Timer(_rcode))
+	Sendby_socketid(_sid,"RMSETTIMER",SM.return_MSet_Timer(_rcode))
 
 
 }
@@ -53,8 +53,33 @@ var SendRsp_MGet=function(_sid,_rcode,_data){
 
 }
 
+var SendRsp_MGet_Device_History=function(_sid,_rcode,_data){
+
+	Sendby_socketid(_sid,"RMGETHISTORY",SM.return_MGet_Device_History(_rcode,_data))
+
+}
+
+var Set_Up_Timer=function(_sid,_data)	{
+	return new Promise(function(resolve, reject) {
+
+		setTimeout(callback, _data.time- Get_Time_Now(), "Hello");
+	});
+
+}
+
+function Get_Time_Now()	{
+	var now = new Date();
+	return now - (now.getTimezoneOffset() * 3600000)
 
 
+}
+
+var Send_Rsp_MGet_Timer=function(_sid,_rcode,_data)	{
+
+	Sendby_socketid(_sid,"RMGETTIMER",SM.return_MGet_Timer(_rcode,_data))
+	console.log("LAGGG")
+
+}
 module.exports=function(_io,_mqttc){
 	mqttc=_mqttc
 	io=_io
@@ -66,7 +91,9 @@ module.exports=function(_io,_mqttc){
 		SendRsp_MNode: SendRsp_MNode,
 		SendRsp_MReg: SendRsp_MReg,
 		SendRsp_MSet_Timer: SendRsp_MSet_Timer,
-		SendRsp_MGet: SendRsp_MGet
+		SendRsp_MGet: SendRsp_MGet,
+		SendRsp_MGet_Device_History: SendRsp_MGet_Device_History,
+		Send_Rsp_MGet_Timer: Send_Rsp_MGet_Timer
 
 	};
 

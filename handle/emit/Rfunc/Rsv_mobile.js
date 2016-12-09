@@ -13,10 +13,10 @@ var return_SYNC=function (_dev){
 var return_SYNC_Power=function (_dev){
 
 	return {
-	    title: "@SYNCPOWNER",
+	    title: "@SYNCPOWER",
 	    homeCode: _dev.homeCode,
 	    nodeCode: _dev.nodeCode,
-	    status: _dev.status
+	    power: _dev.cpower
     }
 
 }

@@ -11,7 +11,6 @@ var setdb=require('./mongoose/setdb/setdb.js')(model)
 var func=require('./handle/handle.js')(mqttc,io,query,setdb)
 
 
-
 // Socket io server for Mobile client
 
 var connection=0
@@ -66,17 +65,24 @@ io.on('connection', function(socket){
 
 	});
 
+  socket.on('MGETHISTORY', function(msg){
+
+    console.log(msg)
+    func.handle_MGetHistory(msg,socket.id)
+
+  });
+
   socket.on('MGETTIMER', function(msg){
 
     console.log(msg)
-    func.handle_MReg(msg,socket.id)
+    func.handle_MGetTimer(msg,socket.id)
 
   });
 
   socket.on('MSETTIMER', function(msg){
 
     console.log(msg)
-    func.handle_MReg(msg,socket.id)
+    func.handle_MSetTimer(msg,socket.id)
 
   });
 
@@ -90,26 +96,26 @@ io.on('connection', function(socket){
 });
 
 
-// Mqtt broker for Home 
+// Mqtt broker for Home
 mqttc.on('connect', function () {
 
   mqttc.subscribe('#')
-  
+
 })
 
 
 
 mqttc.on('message', function (topic, message) {
-  
+
   console.log(topic.toString()," --  ",message.toString());
-  
+
   var x=topic.indexOf("/")
 
   console.log(topic.substring(0,x),"---",topic.substring(x+1))
 
   switch(topic.substring(x+1)){
 
-  	case "REGHOME": 
+  	case "REGHOME":
   		console.log("reghome")
   		func.handle_RegHome(topic.substring(0,x),message)
   		break
@@ -137,13 +143,9 @@ mqttc.on('message', function (topic, message) {
   		console.log("RUPDATEPOWER")
   		func.handle_Update_Power_Value(topic.substring(0,x),message)
 
-  	default: 
+  	default:
   		console.log("Fail")
 
   }
-  
-}) 
-	
 
-
-
+})

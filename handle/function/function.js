@@ -115,7 +115,8 @@ function MLogin_GetUserInfo(_in,_sid){
 
 		uid: _in.userID,
 		SID: _sid, 
-		LDevice: _in.data.Device
+		LDevice: _in.data.Device,
+		LHome: _in.data.HomeID
 	}
 
 
@@ -125,11 +126,58 @@ function MSet_Timer_Check_Syntax(_in)	{
 	return new Promise(function(resolve, reject) {
 
 			if(!_in.userID || !_in.homeCode || !_in.nodeCode || !_in.status || !_in.time)
-				return resolve(_in)
-			return reject(201)
+				return reject(201)
+			return resolve(_in)
 
 
 		});
+
+}
+
+function Get_Time_Now()	{
+	var now = new Date();
+	return now - (now.getTimezoneOffset() * 3600000)
+
+
+}
+
+function MGetHistory_Syntax(_in)	{
+
+	return new Promise(function(resolve, reject) {
+
+			if(!_in.userID || !_in.homeCode || !_in.count || !_in.skip  || !_in.timestart || !_in.timeend)
+				return reject(100)
+			if(_in.count<1 || _in.skip<0) return reject(100)
+			return resolve(_in)
+
+
+		});
+
+}
+
+function Check_User_Permission_By_Home(_in){
+
+	return new Promise(function(resolve, reject) {
+
+		if(_in.data.HomeID.indexOf(_in.homeCode)>-1)
+			return resolve(_in)
+		return reject(201)
+
+
+	});
+
+}
+
+function MGetTimer_Syntax(_in)	{
+
+	return new Promise(function(resolve, reject) {
+
+		if(!_in.userID || !_in.homeCode || !_in.nodeCode || !_in.count || !_in.skip)
+			return resolve(_in)
+		return reject(201)
+
+
+	});
 
 }
 
@@ -145,7 +193,11 @@ module.exports=function(){
 		MSetNode_CheckUser: MSetNode_CheckUser,
 		MLogin_GetUserInfo: MLogin_GetUserInfo,
 		MSet_Timer_Check_Syntax: MSet_Timer_Check_Syntax,
-		MGet_Check_Syntax: MGet_Check_Syntax
+		MGet_Check_Syntax: MGet_Check_Syntax,
+		Get_Time_Now: Get_Time_Now,
+		MGetHistory_Syntax: MGetHistory_Syntax,
+		Check_User_Permission_By_Home: Check_User_Permission_By_Home,
+		MGetTimer_Syntax: MGetTimer_Syntax
 
 	};
 

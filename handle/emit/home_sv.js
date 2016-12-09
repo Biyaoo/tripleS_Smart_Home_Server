@@ -84,7 +84,7 @@ var SendRsp_CGet=function(_ClientID,_rcode,_data){
 }
 
 var SendRsp_Update_Device_Power=function(_ClientID,_rcode){
-
+	console.log("rcode",_rcode)
 	return new Promise(function(resolve, reject) {
 
 		return resolve(Send_to_home(_ClientID+"/RUPDATEPOWER",HS.Return_Update_Device_Power(_rcode)))

@@ -34,8 +34,37 @@ var Get_DeviceData=function (_data){
 
 					if (data){
 						_data.code=data.code
-						console.log("codeeeeee",_data.code)
+						_data.DName=data.DName
 						return resolve(_data,_data.data=data)
+					}
+
+					return reject(102)
+			}
+
+	});
+
+  });
+}
+
+var Get_Device_Data=function (_data){
+
+	return new Promise(function(resolve, reject) {
+		model.device.findOne({ DID: _data.nodeCode }, function(err, data) {			
+
+			if(err){
+				throw err
+				console.log(err)
+				return reject(400)
+				
+			}
+			if (!data) return reject(101);
+			
+			if(_data.homeCode!=data.HomeID) return reject(112)
+			else{
+
+					if (data){
+						_data.code=data.code
+						return resolve(_data,_data.device=data)
 					}
 
 					return reject(102)
@@ -55,6 +84,7 @@ function Get_Deviceinfo(data){
     dev["Rom"]=data["Rom"];
     dev["Status"]=data["Status"];
     dev["Current"]=data["Current"];
+    dev["Type"]=data["Type"];
 
     return dev
 
@@ -266,6 +296,50 @@ var Get_All_Device_By_HomeID=function(_in){
 }
 
 
+var Get_Device_History_By_Home=function(_in)	{
+
+	return new Promise(function(resolve, reject) {
+		console.log("tttttt",_in.count)
+		model.devicelog.find({HomeID: _in.homeCode, Time: {$lte: _in.timestart}, Time: {$gte: _in.timeend}},{}, {sort:{Time: -1}, limit: parseInt(_in.count), skip: parseInt(_in.skip)} ,	function(err,data)	{
+			//console.log("degggggg",data)
+			if (err) return reject(400);
+
+			_in.LDevice=data
+
+			return resolve(_in)
+
+
+		})
+
+
+
+
+	});
+
+}
+
+var Get_Timer_By_NodeCode=function(_in)	{
+
+	return new Promise(function(resolve, reject) {
+		console.log("tttttt",_in)
+		model.timer.find({HomeID: _in.homeCode, DID: _in.nodeCode, UID: _in.userID},{}, {sort:{Time: -1}, limit: parseInt(_in.count), skip: parseInt(_in.skip)} ,	function(err,data)	{
+			//console.log("degggggg",data)
+			if (err) return reject(400);
+
+			_in.LTimer=data
+
+			return resolve(_in)
+
+
+		})
+
+
+
+
+	});
+
+}
+
 module.exports= function(_model)
 {
 
@@ -282,6 +356,9 @@ module.exports= function(_model)
 		Login: Login,
 		Get_Home_By_Code: Get_Home_By_Code,
 		Get_All_Device_By_HomeID: Get_All_Device_By_HomeID,
-		Get_All_Home_By_User: Get_All_Home_By_User
+		Get_All_Home_By_User: Get_All_Home_By_User,
+		Get_Device_Data: Get_Device_Data,
+		Get_Device_History_By_Home: Get_Device_History_By_Home,
+		Get_Timer_By_NodeCode: Get_Timer_By_NodeCode
 	};
 }

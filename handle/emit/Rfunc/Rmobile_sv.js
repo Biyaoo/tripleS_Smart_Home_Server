@@ -90,6 +90,35 @@ var return_MSet_Timer=function(_rcode)	{
 
 }
 
+var return_MGet_Device_History=function(_rcode,_data)  {
+    var ret={
+            title: "@RMGETHISTORY",
+            rcode: _rcode
+        };
+
+    if(_rcode==200)   {
+        ret.Ldevice= _data.LDevice
+    }
+
+    return ret
+
+}
+
+var return_MGet_Timer=function(_rcode,_data)  {
+
+    var ret={
+            title: "@RMGETTIMER",
+            rcode: _rcode
+        };
+
+    if(_rcode==200)   {
+        ret.LTimer= _data.LTimer
+    }
+    console.log("REEEEE",ret)
+    return ret
+
+
+}
 
 module.exports=function(){
 
@@ -101,7 +130,9 @@ module.exports=function(){
 		return_MNode: return_MNode,
 		return_MReg: return_MReg,
 		return_MSet_Timer: return_MSet_Timer,
-		return_MGet: return_MGet
+		return_MGet: return_MGet,
+        return_MGet_Device_History: return_MGet_Device_History,
+        return_MGet_Timer: return_MGet_Timer
 
 	};
 

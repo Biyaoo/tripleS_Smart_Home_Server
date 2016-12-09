@@ -90,7 +90,7 @@ var Update_Device_Power=function(_in){
 
 	return new Promise(function(resolve, reject) {
 
-		model.device.findOne({code: _in.code, HomeID: _in.homeCode},function(err,data){
+		model.device.findOne({DID: _in.nodeCode, HomeID: _in.homeCode},function(err,data){
 
 			if (err) return reject(400)
 
@@ -101,13 +101,59 @@ var Update_Device_Power=function(_in){
 			
 			data.save(function (err) {
 	        	if(err) console.log('ERROR!');
-	        	return resolve(_in)
+	        	return resolve(_in,_in.cpower=data.Current)
 	        }); 
     	});
 
 	});
 
 
+}
+
+function Get_Time_Now()	{
+	var now = new Date();
+	return now - (now.getTimezoneOffset() * 3600000)
+
+
+}
+
+var Create_Log_Device=function(_in)	{
+	return new Promise(function(resolve, reject) {
+		model.devicelog.create({ HomeID: _in.homeCode, DID: _in.nodeCode, DName: _in.DName, Status: _in.status, Time: Get_Time_Now(), UID: _in.userID }, function (err, small) {
+			  console.log("eeee",small)
+			  if (err) return reject(400);	
+			  
+			  return resolve(_in)
+		})
+	});
+
+
+}
+
+var Create_Timer=function(_in)	{
+	return new Promise(function(resolve, reject) {
+		model.timer.create({HomeID: _in.homeCode, DID: _in.nodeCode, DName: _in.DName, Status: _in.status, Time: _in.time, UID: _in.userID, Exc: 0},function(err,data){
+
+			if (err) return reject(400);
+
+			return resolve(_in)
+
+		});
+	});
+
+
+}
+
+var Update_Status_Timer=function(_data){
+
+	return new Promise(function(resolve, reject) {
+	model.timer.findOneAndUpdate({DID:_data.nodeCode, Time: _data.time},{ $set: { Exc: 1 }} , function (err, data) {
+        
+	        if(err) return reject(400)
+	        console.log("sau updatteee",data)
+	        return resolve(_data)
+    	});
+	});
 }
 
 module.exports= function(_model)
@@ -121,6 +167,9 @@ module.exports= function(_model)
 		Create_User: Create_User,
 		Create_Home: Create_Home,
 		Create_Node: Create_Node,
-		Update_Device_Power: Update_Device_Power
+		Update_Device_Power: Update_Device_Power,
+		Create_Log_Device:  Create_Log_Device,
+		Create_Timer: Create_Timer,
+		Update_Status_Timer: Update_Status_Timer
 	};
 }
