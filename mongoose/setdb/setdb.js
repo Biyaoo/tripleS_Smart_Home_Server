@@ -112,14 +112,14 @@ var Update_Device_Power=function(_in){
 
 function Get_Time_Now()	{
 	var now = new Date();
-	return now - (now.getTimezoneOffset() * 3600000)
+	return now.getTime()
 
 
 }
 
 var Create_Log_Device=function(_in)	{
 	return new Promise(function(resolve, reject) {
-		model.devicelog.create({ HomeID: _in.homeCode, DID: _in.nodeCode, DName: _in.DName, Status: _in.status, Time: Get_Time_Now(), UID: _in.userID }, function (err, small) {
+		model.devicelog.create({ HomeID: _in.homeCode, DID: _in.nodeCode, DName: _in.DName, Status: _in.status, Time: Get_Time_Now(), UID: _in.userID, Type: _in.Type }, function (err, small) {
 			  console.log("eeee",small)
 			  if (err) return reject(400);	
 			  

@@ -17,16 +17,19 @@ var return_MSetNode=function (_rcode)
         };
 }
 
-var return_MGetNode=function (_rcode,_Ldevice)
+var return_MGetNode=function (_rcode,_data)
 {
 	var ret={
-            title: "@RMSETNODE",
+            title: "@RMGETNODE",
             rcode: _rcode,
            
         };
 
 
-  	if (_rcode==200) ret.device=_Ldevice
+  	if (_rcode==200) {
+        ret.homeCode=_data.homeCode
+        ret.device=_data.LDevice
+    }
   	return ret
 }
 

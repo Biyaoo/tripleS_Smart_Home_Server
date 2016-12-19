@@ -35,6 +35,7 @@ var Get_DeviceData=function (_data){
 					if (data){
 						_data.code=data.code
 						_data.DName=data.DName
+						_data.Type=data.Type
 						return resolve(_data,_data.data=data)
 					}
 
@@ -114,6 +115,42 @@ var MGetNode_GetListDevice=function (_in){
 
 		});
 	});
+
+}
+
+var Get_All_Device_By_HomeCode=function(_in){
+
+	return new Promise(function(resolve, reject) {
+
+		model.device.find({HomeID: _in.homeCode}, function(err,data){
+
+			if(err) return reject(400)
+		
+
+			if(!data) return reject(101)
+
+			//console.log(data)
+			var LDevice=[]
+
+			data.forEach(function(item){
+				var dev=Get_Deviceinfo(item)
+				if(_in.data.Device.indexOf(item.DID)>-1)
+					dev.Control=1
+				else
+					dev.Control=0
+				LDevice.push(dev)
+
+
+			});
+			//console.log(arr)
+			_in.LDevice=LDevice
+			console.log("INNNNNNNNNN",_in,"INNNNN")
+			return resolve(_in)
+
+		});
+
+	});		
+
 
 }
 
@@ -219,7 +256,6 @@ var Get_Home_By_Code=function(_in){
 
 			if(!data) return reject(101)
 
-
 			return resolve(data)
 
 		});
@@ -272,6 +308,8 @@ var Get_All_Home_By_User=function(_in)	{
 var Get_All_Device_By_HomeID=function(_in){
 
 	return new Promise(function(resolve, reject) {
+		arr={}
+		arr.Rom=_in.Rom
 
 		model.device.find({HomeID: _in.HomeID}, function(err,data){
 
@@ -281,7 +319,7 @@ var Get_All_Device_By_HomeID=function(_in){
 			if(!data) return reject(101)
 
 			//console.log(data)
-			arr={}
+
 			arr.homeCode=_in.HomeID
 			arr.code=_in.Code
 			arr.LDevice=data
@@ -359,6 +397,7 @@ module.exports= function(_model)
 		Get_All_Home_By_User: Get_All_Home_By_User,
 		Get_Device_Data: Get_Device_Data,
 		Get_Device_History_By_Home: Get_Device_History_By_Home,
-		Get_Timer_By_NodeCode: Get_Timer_By_NodeCode
+		Get_Timer_By_NodeCode: Get_Timer_By_NodeCode,
+		Get_All_Device_By_HomeCode: Get_All_Device_By_HomeCode
 	};
 }

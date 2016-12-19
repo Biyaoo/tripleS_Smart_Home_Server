@@ -67,7 +67,7 @@ var handle_MGetNode=function(msg,_sid){
 
 	func.Parse_json(msg)
 		.then((i) => {	return query.Get_UserData(i)})
-		.then((i) => {	return query.MGetNode_GetListDevice(i)})		// get list device by user
+		.then((i) => {	return query.Get_All_Device_By_HomeCode(i)})		// get list device by user
 		.then((i) => {console.log(i);	return MtoSv.SendRsp_MGetNode(_sid,200,i)})
 		.catch((err) => {console.log("---",err,"---");	return MtoSv.SendRsp_MGetNode(_sid,err) })
 
@@ -213,7 +213,8 @@ var handle_SetNode=function(_ClientID,_msg){
 			.then((i) => {	return query.Get_DeviceData(i)	})   	// get device data
 			.then((i) => {	return func.MSetNode_Syntax(i)	})		// check syntax
 			.then((i) => {	return setdb.SetNodeStatus(i)	})		// update database
-			.then((i) => {	//console.log(_sid,i)
+			.then((i) => {	i.userID="root"
+							setdb.Create_Log_Device(i)
 							SvtoM.SYNC_Mobile(i,server.LUser,"")	// send SYNC signal
 							HtoSv.SendRsp_SetNode(_ClientID,200)		// send respond to client
 						 })		

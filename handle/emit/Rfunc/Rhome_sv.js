@@ -95,6 +95,7 @@ var Return_Get_Home_By_Code=function(_rcode,_data){
 
 	if(_rcode==200){
 		ret.code=_data.code
+		ret.Rom=_data.Rom
 		ret.homeCode=_data.homeCode
 		ret.LDevice=_data.LDevice
 	}

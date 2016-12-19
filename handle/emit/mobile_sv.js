@@ -21,9 +21,10 @@ var SendRsp_MSetNode=function(_sid,_rcode){
 
 }
 
-var SendRsp_MGetNode=function(_sid,_rcode,_Ldevice){
+var SendRsp_MGetNode=function(_sid,_rcode,_data){
 
-	Sendby_socketid(_sid,"RMGETNODE",SM.return_MGetNode(_rcode,_Ldevice))
+	console.log("----------------",_data)
+	Sendby_socketid(_sid,"RMGETNODE",SM.return_MGetNode(_rcode,_data))
 
 }
 

@@ -12,7 +12,7 @@ module.exports = function(mongoose) {
     HomeID: String,
     HomeName: String,
     Address: String,
-    Rom: String,
+    Rom: Array,
     UID: String,
     CDevice: Number,
     Code: String
@@ -36,7 +36,8 @@ module.exports = function(mongoose) {
     DName: String,
     Rom: String,
     Time: String,
-    UID: String
+    UID: String,
+    Type: Number
   }, { versionKey: false });
 
   var TimerSchema = new Schema({
